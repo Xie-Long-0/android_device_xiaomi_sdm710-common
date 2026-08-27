@@ -1,3 +1,6 @@
+# Battery stats
+genfscon proc /wakelocks                                                                            u:object_r:proc_wakelocks:s0
+
 # Display
 genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/idle_state                               u:object_r:sysfs_graphics:s0
 genfscon sysfs /devices/platform/soc/soc:qcom,dsi-display                                           u:object_r:sysfs_graphics:s0

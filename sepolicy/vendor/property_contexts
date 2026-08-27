@@ -45,6 +45,10 @@ ro.miui.cust_variant                                                            
 # Mlipay
 persist.vendor.sys.pay                                                                              u:object_r:vendor_tee_listener_prop:s0
 
+# RIL
+ro.vendor.ril.svlte1x                           u:object_r:vendor_radio_prop:s0
+ro.vendor.ril.svdo                              u:object_r:vendor_radio_prop:s0
+
 # Sensors
 invn.hal.                                                                                           u:object_r:vendor_sensors_prop:s0
 persist.sensor.                                                                                     u:object_r:vendor_sensors_prop:s0
@@ -53,3 +57,6 @@ persist.sensor.                                                                 
 persist.sys.thermal.                                                                                u:object_r:vendor_thermal_normal_prop:s0
 sys.thermal.                                                                                        u:object_r:vendor_thermal_normal_prop:s0
 vendor.sys.thermal.                                                                                 u:object_r:vendor_thermal_normal_prop:s0
+
+# Fast Charge
+persist.vendor.fastchg_enabled          u:object_r:vendor_fastcharge_prop:s0
