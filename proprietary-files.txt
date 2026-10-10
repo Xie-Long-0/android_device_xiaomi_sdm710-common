@@ -7,6 +7,7 @@
 #   - lowi-server
 #   - libcne
 #   - libwqe
+# libmt@1.2 depends on device specific keymaster lib
 
 # ADSP
 vendor/bin/adsprpcd
@@ -54,6 +55,10 @@ vendor/app/CACertService/CACertService.apk
 vendor/lib64/libcacertclient.so
 vendor/lib64/libjnihelper.so
 vendor/lib64/vendor.qti.hardware.cacert@1.0.so
+
+# Camera (GCAM required libs) - from Bonito SP2A.220505.008
+vendor/lib/lib_aion_buffer.so|a49aab8cb80f05b64c0c12a3970dba50d2dc4691
+vendor/lib64/lib_aion_buffer.so|3ab3ff99bff2b6f2884da2fc4b0cfa6d69e8e94b
 
 # CDSP
 vendor/bin/cdsprpcd
@@ -448,28 +453,6 @@ vendor/firmware/ipa_fws.mdt
 vendor/bin/msm_irqbalance
 vendor/etc/msm_irqbalance.conf
 
-# Keymaster
-vendor/bin/hw/android.hardware.keymaster@4.0-service-qti
--vendor/etc/init/android.hardware.keymaster@4.0-service-qti.rc
-vendor/lib64/libkeymasterdeviceutils.so
-vendor/lib64/libkeymasterprovision.so
-vendor/lib64/libkeymasterutils.so
-vendor/lib64/libqtikeymaster4.so
-
-# Listen
-vendor/lib/hw/sound_trigger.primary.sdm710.so
-vendor/lib/libadpcmdec.so
-vendor/lib/libcapiv2svacnn.so
-vendor/lib/libcapiv2vop.so
-vendor/lib/libgcs-calwrapper.so
-vendor/lib/libgcs-ipc.so
-vendor/lib/libgcs-osal.so
-vendor/lib/libgcs.so
-vendor/lib/liblistensoundmodel2.so
-vendor/lib/libmulawdec.so
-vendor/lib/librice.so
-vendor/lib/libsmwrapper.so
-
 # Media
 vendor/lib/libmmosal.so;MODULE_SUFFIX=_vendor
 vendor/lib64/libmmosal.so;MODULE_SUFFIX=_vendor
@@ -496,7 +479,7 @@ vendor/bin/mtd@1.2
 vendor/etc/init/vendor.xiaomi.hardware.mtdservice@1.2-service.rc
 vendor/etc/vintf/manifest/manifest_vendor.xiaomi.hardware.mtdservice.xml
 vendor/lib64/libmfido.so
-vendor/lib64/libmt@1.2.so
+vendor/lib64/libmt@1.2.so;DISABLE_DEPS
 vendor/lib64/libwvkeybox.so
 
 # Neural networks
@@ -661,17 +644,6 @@ vendor/lib/vendor.qti.hardware.scve.panorama@1.0.so
 
 # SECCOMP policy
 vendor/etc/seccomp_policy/mediacodec.policy
-
-# Secure element - from grus
-vendor/bin/hw/vendor.qti.secure_element@1.0-service|48621dda1de283dcf0f5c93f0d17bcd53f3f2072
--vendor/etc/init/vendor.qti.secure_element@1.0-service.rc|14796c45011ad0d4735e0f3c9dbc646e6af205aa
-vendor/lib64/hw/android.hardware.secure_element@1.0-impl.so|99bb218cf8491ac7e031dc389267454b4acbcfe6
-
-# Secure element (power manager)
-vendor/bin/hw/vendor.qti.esepowermanager@1.0-service
--vendor/etc/init/vendor.qti.esepowermanager@1.0-service.rc
-vendor/lib64/hw/vendor.qti.esepowermanager@1.0-impl.so
-vendor/lib64/vendor.qti.esepowermanager@1.0.so
 
 # Soter
 system/app/SoterService/SoterService.apk

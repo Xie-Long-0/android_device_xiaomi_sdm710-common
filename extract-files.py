@@ -68,8 +68,6 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('android.media.audio.common.types-V2-cpp.so','android.media.audio.common.types-V4-cpp.so'),
     'system_ext/lib64/lib-imsvideocodec.so': blob_fixup()
         .add_needed('libgui_shim.so'),
-    'vendor/bin/pm-service': blob_fixup()
-        .add_needed('libutils-v33.so'),
     'vendor/etc/seccomp_policy/atfwd@2.0.policy': blob_fixup()
         .add_line_if_missing('gettid: 1'),
     'vendor/etc/seccomp_policy/vendor.qti.hardware.dsp.policy': blob_fixup()
@@ -90,6 +88,10 @@ module = ExtractUtilsModule(
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
     namespace_imports=namespace_imports,
+)
+
+module.add_proprietary_file('proprietary-files-nfc.txt').add_copy_files_guard(
+    'TARGET_HAS_NFC', 'true'
 )
 
 if __name__ == '__main__':
