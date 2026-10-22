@@ -64,14 +64,14 @@ lib_fixups: lib_fixups_user_type = {
 }
 
 blob_fixups: blob_fixups_user_type = {
-    'system_ext/lib/libwfdservice.so': blob_fixup()
-        .replace_needed('android.media.audio.common.types-V2-cpp.so','android.media.audio.common.types-V4-cpp.so'),
     'system_ext/lib64/lib-imsvideocodec.so': blob_fixup()
         .add_needed('libgui_shim.so'),
     'vendor/etc/seccomp_policy/atfwd@2.0.policy': blob_fixup()
         .add_line_if_missing('gettid: 1'),
     'vendor/etc/seccomp_policy/vendor.qti.hardware.dsp.policy': blob_fixup()
         .add_line_if_missing('madvise: 1'),
+    'vendor/bin/mm-pp-dpps': blob_fixup()
+        .replace_needed('libtinyxml2.so', 'libtinyxml2_1.so'),
     'vendor/lib64/libwvhidl.so': blob_fixup()
         .add_needed('libcrypto_shim.so'),
     'vendor/lib64/mediadrm/libwvdrmengine.so': blob_fixup()

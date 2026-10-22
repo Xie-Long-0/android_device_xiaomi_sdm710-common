@@ -84,7 +84,7 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/audio/,$(TARGET_COPY_OUT_VENDOR)/etc)
 
 PRODUCT_COPY_FILES += \
-    frameworks/av/services/audiopolicy/config/a2dp_in_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_in_audio_policy_configuration_7_0.xml \
+    frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
@@ -93,10 +93,15 @@ PRODUCT_COPY_FILES += \
 # Audio (Dolby)
 $(call inherit-product-if-exists, hardware/dolby/dolby.mk)
 
+# Audio (Dolby)
+$(call inherit-product-if-exists, hardware/dolby/dolby.mk)
+
 # Camera
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service.sdm710
+
+$(call soong_config_set,libcameraservice,ext_lib,//$(LOCAL_PATH):libcameraservice_extension.sdm710)
 
 # Configstore
 PRODUCT_PACKAGES += \
@@ -178,7 +183,7 @@ PRODUCT_PACKAGES += \
     IPACM_cfg.xml
 
 # Kernel
-PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := true
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -188,11 +193,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
-$(call soong_config_set,lineage_health,charging_control_supports_bypass,false)
+$(call soong_config_set_bool,lineage_health,charging_control_supports_bypass,false)
+$(call soong_config_set,lineage_health,fast_charge_node,/sys/class/qcom-battery/restricted_charging)
+$(call soong_config_set,lineage_health,fast_charge_value_none,1)
+$(call soong_config_set,lineage_health,fast_charge_value_fast_charge,0)
 
 # LiveDisplay
 PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.1-service.sdm710
+    vendor.lineage.livedisplay-service.sysfs
+
+$(call soong_config_set_bool,livedisplay_sysfs,enable_af,true)
+$(call soong_config_set_bool,livedisplay_sysfs,enable_se,true)
 
 # Media configs
 PRODUCT_COPY_FILES += \
@@ -203,11 +214,14 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/media/,$(TARGET_COPY_OUT_VENDOR)/etc)
 
+$(call soong_config_set_bool,stagefright,target_disable_thumbnail_block_model,true)
+
 # NFC
 ifeq ($(TARGET_HAS_NFC),true)
 PRODUCT_PACKAGES += \
     android.hardware.nfc@1.2-service \
     com.android.nfc_extras \
+    NfcResCommon \
     Tag
 
 PRODUCT_COPY_FILES += \
@@ -250,10 +264,6 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/flash_super_dummy.sh:install/bin/flash_super_dummy.sh
 
-# Fast Charge HAL
-PRODUCT_PACKAGES += \
-    vendor.lineage.fastcharge@1.0-service.qcom
-
 # Partitions
 PRODUCT_PACKAGES += \
     vendor_bt_firmware_mountpoint \
@@ -284,6 +294,10 @@ PRODUCT_COPY_FILES += \
 # QTI fwk-detect
 PRODUCT_PACKAGES += \
     libqti_vndfwk_detect.vendor
+
+# Radio
+PRODUCT_PACKAGES += \
+    android.hardware.radio-service.compat
 
 # Rootdir
 PRODUCT_PACKAGES += \
@@ -336,6 +350,9 @@ PRODUCT_BOOT_JARS += \
 PRODUCT_PACKAGES += \
     android.hardware.thermal-service.qti
 
+# UFFD GC
+OVERRIDE_ENABLE_UFFD_GC := false
+
 # USB
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.3-service.dual_role_usb \
@@ -373,9 +390,6 @@ PRODUCT_COPY_FILES += \
 # Wi-Fi Display
 PRODUCT_PACKAGES += \
     libwfdaac_vendor
-
-PRODUCT_BOOT_JARS += \
-    WfdCommon
 
 # Inherit the proprietary files
 $(call inherit-product, vendor/xiaomi/sdm710-common/sdm710-common-vendor.mk)
